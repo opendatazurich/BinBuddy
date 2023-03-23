@@ -9,3 +9,20 @@ CSV-Format: https://github.com/metaodi/openerz/tree/main/csv#format
 
 Gemeinden: https://s.zazuko.com/2cdhrjj
 Feiertage: 
+
+## Flask application
+
+To run the application:
+
+```
+python app.py
+```
+
+The vue app is in the `client/src` directory.
+
+To run the vue app:
+
+```
+cd client
+npm run serve
+```
