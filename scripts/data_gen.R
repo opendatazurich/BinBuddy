@@ -26,7 +26,7 @@ gemeinden <- httr2::request(url_gemeinde) %>%
 ### write Gemeinden
 write_csv(gemeinden, file = "data/gemeinden.csv")
 
-### scrape Ferien
+### scrape Feiertage
 
 
 response <- httr2::request(holiday_url) %>%
@@ -39,5 +39,21 @@ response <- httr2::request(holiday_url) %>%
   req_perform() %>%
   resp_body_json(check_type = FALSE)
 
-json_content <- jsonlite::content(response, as = "text")
-parsed_json <- jsonlite::fromJSON(json_content)
+
+
+
+df_feiertage <- purrr::map_dfr(response, function(x) {
+  unlist(x)
+})
+
+### clean Feiertage
+clean_feiertage <- df_feiertage %>%
+  clean_names() %>%
+  tidyr::unite(canton,
+               starts_with("subdivisions_short_name"),
+               sep = ", ",
+               na.rm = T) %>%
+  select(id, start_date, end_date, name_text, nationwide, canton)
+
+### save Feiertage
+write_csv(clean_feiertage, file = "data/feiertage.csv")
