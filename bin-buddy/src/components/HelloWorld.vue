@@ -70,21 +70,21 @@
           </v-row>
           <!-- Date-Series END -->
           <v-row>
-              <!-- Single Datetime -->
-              <v-row v-if="!row.isDateSeries">
-                <v-col>
-                  <v-date-picker
-                    v-model="row.datePicker"
-                    label="Wähle das Datum"
-                  ></v-date-picker>
-                </v-col>
-                <v-col>
-                  <v-time-picker
-                    v-model="row.timePicker"
-                    label="Wähle die Zeit"
-                    format="24hr"
-                  ></v-time-picker>
-                </v-col>
+            <!-- Single Datetime -->
+            <v-row v-if="!row.isDateSeries">
+              <v-col>
+                <v-date-picker
+                  v-model="row.datePicker"
+                  label="Wähle das Datum"
+                ></v-date-picker>
+              </v-col>
+              <v-col>
+                <v-time-picker
+                  v-model="row.timePicker"
+                  label="Wähle die Zeit"
+                  format="24hr"
+                ></v-time-picker>
+              </v-col>
             </v-row>
           </v-row>
         </v-row>
@@ -120,19 +120,14 @@
 </template>
 
 <script>
+import csvFile from "../assets/gemeinden.csv";
+
 export default {
   name: "HelloWorld",
 
   data: () => ({
     formData: [],
-    municipalities: [
-      "Bülach",
-      "Lausanne",
-      "Chur",
-      "Bitsch",
-      "Sarnen",
-      "Zollikofen",
-    ],
+    municipalities: [],
     valid: true,
     garbageType: ["Abfall", "Papier", "Sperrgut", "Holz"],
     picker: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
@@ -176,6 +171,11 @@ export default {
       }
       this.$refs.form.reset();
     },
+  },
+  created() {
+    csvFile.forEach((element) => {
+      this.municipalities.push(element.offizieller_gemeindename);
+    });
   },
 };
 </script>
