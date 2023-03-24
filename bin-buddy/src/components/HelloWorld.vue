@@ -130,7 +130,10 @@
       </v-form>
       <!-- FORMULAR END -->
     </v-row>
-    <!-- FORMULAR END -->
+    <v-row
+      ><!-- FORMULAR END -->
+      <v-alert class="mt-3" v-if="success" type="success">DONE, thank you!</v-alert>
+    </v-row>
   </v-container>
 </template>
 
@@ -145,9 +148,10 @@ export default {
   data: () => ({
     holidays: [],
     municipality: "",
-    formData: {entries: []},
+    formData: { entries: [] },
     municipalities: [],
     valid: true,
+    success: false,
     garbageType: [],
     picker: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
       .toISOString()
@@ -199,11 +203,15 @@ export default {
     },
     /* TODO: DOWNLOAD AS CSV */
     downloadAsCSV() {
-      console.log("muni", this.municipality)
+      console.log("muni", this.municipality);
       this.formData.municipality = this.municipality;
       console.log("Download", JSON.stringify(this.formData));
-      const path = 'http://localhost:5000/submit_calendar';
-      axios.post(path, this.formData)
+      const path = "http://localhost:5000/submit_calendar";
+      setTimeout(() => {
+        this.success = true;
+      }, "1337");
+      axios
+        .post(path, this.formData)
         .then((res) => {
           console.log(res);
         })
