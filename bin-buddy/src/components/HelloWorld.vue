@@ -60,6 +60,8 @@
                 <v-select
                   v-model="row.value"
                   :items="days"
+                  item-text="name"
+                  item-value="number"
                   attach
                   chips
                   label="Wann?"
@@ -72,10 +74,10 @@
                   :rules="[numberRule]"
                 ></v-text-field>
                 <v-radio-group v-model="row.radioGroup">
-                  <v-radio label="Tag(e)" value="days"></v-radio>
-                  <v-radio label="Woche(n)" value="weeks"></v-radio>
-                  <v-radio label="Monat(e)" value="months"></v-radio>
-                  <v-radio label="Jahr(e)" value="years"></v-radio>
+                  <v-radio label="Tag(e)" value="daily"></v-radio>
+                  <v-radio label="Woche(n)" value="weekly"></v-radio>
+                  <v-radio label="Monat(e)" value="monthly"></v-radio>
+                  <v-radio label="Jahr(e)" value="yearly"></v-radio>
                 </v-radio-group>
               </v-col>
             </v-row>
@@ -150,13 +152,13 @@ export default {
       .toISOString()
       .substr(0, 10),
     days: [
-      "Montag",
-      "Dienstag",
-      "Mittwoch",
-      "Donnerstag",
-      "Freitag",
-      "Samstag",
-      "Sonntag",
+      { name: "Montag", number: 1 },
+      { name: "Dienstag", number: 2 },
+      { name: "Mittwoch", number: 3 },
+      { name: "Donnerstag", number: 4 },
+      { name: "Freitag", number: 5 },
+      { name: "Samstag", number: 6 },
+      { name: "Sonntag", number: 7 },
     ],
     numberRule: (v) => {
       if (!v.trim()) return true;
