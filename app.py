@@ -122,7 +122,7 @@ def add_csv_to_branch(github_pat, branch_name, csv_path):
 
     # Create the new file in the repository
     repo.create_file(
-        path='new_file.csv',
+        path=f"csv/{csv_path}.csv",
         message='Add new CSV file',
         content=contents,
         branch=branch_name
