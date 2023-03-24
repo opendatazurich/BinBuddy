@@ -76,6 +76,30 @@ def submit_calendar():
     return jsonify(response)
 
 
+# function to create new branch (wiring to app still missing)
+def create_branch(github_pat, new_branch_name):
+
+    REPO_NAME = 'BinBuddy'
+    OWNER_NAME = 'opendatazurich'
+
+    # Authenticate with GitHub using PyGitHub
+    g = Github(github_pat)
+
+    # Get the repository object
+    repo = g.get_repo(f"{OWNER_NAME}/{REPO_NAME}")
+
+    # Get the default branch name
+    default_branch = repo.default_branch
+
+    # Create a new branch based on the default branch
+    new_branch = repo.create_git_ref(
+        f"refs/heads/{new_branch_name}",
+        repo.get_branch(default_branch).commit.sha
+    )
+
+    # Print the URL of the new branch
+    print(f"New branch created: {new_branch.url}")
+
 if __name__ == '__main__':
     app.run()
 
