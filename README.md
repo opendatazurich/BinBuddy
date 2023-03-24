@@ -1,8 +1,8 @@
 # BinBuddy
 
+## Demo
+
 [![Watch the demo](https://img.youtube.com/vi/MUNdhnGGVCI/default.jpg)](https://youtu.be/MUNdhnGGVCI)
-
-
 
 ## Datasets
 
