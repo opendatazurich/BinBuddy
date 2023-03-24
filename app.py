@@ -125,7 +125,7 @@ def submit_calendar():
         else:
             event = Event()
             event.add('summary', entry['type'])
-            start_date = datetime.datetime.fromisoformat(event['datePicker'])
+            start_date = datetime.datetime.fromisoformat(entry['datePicker'])
             event.add('dtstart', start_date)
             cal.add_component(event)
 
