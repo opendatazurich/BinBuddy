@@ -100,6 +100,37 @@ def create_branch(github_pat, new_branch_name):
     # Print the URL of the new branch
     print(f"New branch created: {new_branch.url}")
 
+
+# function to add file to branch
+def add_csv_to_branch(github_pat, branch_name, csv_path):
+    # Replace with the name of your repository and the owner's username
+    REPO_NAME = 'BinBuddy'
+    OWNER_NAME = 'opendatazurich'
+
+    # Authenticate with GitHub using PyGitHub
+    g = Github(github_pat)
+
+    # Get the repository object
+    repo = g.get_repo(f"{OWNER_NAME}/{REPO_NAME}")
+
+    # Get the branch object
+    branch = repo.get_branch(branch_name)
+
+    # Read the contents of the CSV file
+    with open(csv_path, 'r') as f:
+        contents = f.read()
+
+    # Create the new file in the repository
+    repo.create_file(
+        path='new_file.csv',
+        message='Add new CSV file',
+        content=contents,
+        branch=branch_name
+    )
+
+    # Print a success message
+    print('CSV file added to branch.')
+
 if __name__ == '__main__':
     app.run()
 
