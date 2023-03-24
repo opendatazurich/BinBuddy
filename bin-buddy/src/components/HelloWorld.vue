@@ -121,6 +121,7 @@
 
 <script>
 import csvFile from "../assets/gemeinden.csv";
+import axios from 'axios';
 
 export default {
   name: "HelloWorld",
@@ -129,7 +130,7 @@ export default {
     formData: [],
     municipalities: [],
     valid: true,
-    garbageType: ["Abfall", "Papier", "Sperrgut", "Holz"],
+    garbageType: [],
     picker: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
       .toISOString()
       .substr(0, 10),
@@ -149,7 +150,23 @@ export default {
     },
   }),
   methods: {
+    getWasteTypes() {
+      console.log("Get Waste types");
+      const path = 'http://localhost:5000/data/waste_types';
+      axios.get(path)
+        .then((res) => {
+          for (const entry in res.data) {
+            this.garbageType.push(res.data[entry]["de"]);
+          }
+          console.log(this.garbageType);
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
+        });
+    },
     addRow() {
+      this.getWasteTypes();
       this.formData.push({
         id: new Date().valueOf(),
         type: true,
