@@ -117,6 +117,10 @@
             ></v-col
           >
         </v-row>
+        <v-row
+          ><!-- FORMULAR END -->
+          <v-alert class="mt-3" v-if="success" type="success">DONE, thank you!</v-alert>
+        </v-row>
         <!-- Preview END -->
         <v-btn
           :disabled="!valid"
@@ -124,15 +128,11 @@
           class="mr-4"
           @click="downloadAsCSV"
         >
-          Download
+          ⬇️  Abschliessen
         </v-btn>
         <v-btn color="error" class="mr-4" @click="reset"> Reset </v-btn>
       </v-form>
       <!-- FORMULAR END -->
-    </v-row>
-    <v-row
-      ><!-- FORMULAR END -->
-      <v-alert class="mt-3" v-if="success" type="success">DONE, thank you!</v-alert>
     </v-row>
   </v-container>
 </template>
