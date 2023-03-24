@@ -131,6 +131,32 @@ def add_csv_to_branch(github_pat, branch_name, csv_path):
     # Print a success message
     print('CSV file added to branch.')
 
+# function to create pull request
+def create_pull_request(github_pat, branch_name, title, description):
+    # Replace with the name of your repository and the owner's username
+    REPO_NAME = 'BinBuddy'
+    OWNER_NAME = 'opendatazurich'
+    
+    # Authenticate with GitHub using PyGitHub
+    g = Github(github_pat)
+
+    # Get the repository object
+    repo = g.get_repo(f"{OWNER_NAME}/{REPO_NAME}")
+
+    # Get the main branch object
+    main_branch = repo.get_branch(repo.default_branch)
+
+    # Create a new pull request object
+    pull_request = repo.create_pull(
+        title=title,
+        body=description,
+        head=branch_name,
+        base=main_branch.name
+    )
+
+    # Print a success message with the pull request URL
+    print(f"Pull request created successfully: {pull_request.html_url}")
+
 if __name__ == '__main__':
     app.run()
 
