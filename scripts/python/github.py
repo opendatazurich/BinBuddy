@@ -1,9 +1,12 @@
 #Create new branch------------------------------
+import os
 import requests
 from github import Github
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
 
 # Replace with your GitHub access token
-ACCESS_TOKEN = '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'
+ACCESS_TOKEN = os.getenv('GITHUB_PAT')
 
 # Replace with the name of your repository and the owner's username
 REPO_NAME = 'BinBuddy'
