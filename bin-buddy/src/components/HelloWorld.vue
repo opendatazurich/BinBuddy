@@ -8,10 +8,22 @@
           filled
           :items="municipalities"
           label="Gemeinde"
+          v-model="municipality"
+          @change="setHolidays(municipality)"
         ></v-autocomplete>
       </v-col>
     </v-row>
     <!-- Gemeinde Auswahl END -->
+    <v-row v-if="municipality">
+      Feiertage:
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title v-for="holiday in holidays" :key="holiday.id">
+            {{ holiday.name }}: {{ holiday.when }}
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-row>
     <v-row>
       <v-col>
         <v-btn color="primary" elevation="2" outlined @click="addRow"
@@ -114,19 +126,22 @@
         </v-btn>
         <v-btn color="error" class="mr-4" @click="reset"> Reset </v-btn>
       </v-form>
+      <!-- FORMULAR END -->
     </v-row>
-    <!-- FORMULAR END -->
   </v-container>
 </template>
 
 <script>
 import csvFile from "../assets/gemeinden.csv";
-import axios from 'axios';
+import axios from "axios";
+import feiertage from "../assets/feiertage.csv";
 
 export default {
   name: "HelloWorld",
 
   data: () => ({
+    holidays: [],
+    municipality: "",
     formData: [],
     municipalities: [],
     valid: true,
@@ -152,8 +167,9 @@ export default {
   methods: {
     getWasteTypes() {
       console.log("Get Waste types");
-      const path = 'http://localhost:5000/data/waste_types';
-      axios.get(path)
+      const path = "http://localhost:5000/data/waste_types";
+      axios
+        .get(path)
         .then((res) => {
           for (const entry in res.data) {
             this.garbageType.push(res.data[entry]["de"]);
@@ -187,6 +203,33 @@ export default {
         this.formData.pop();
       }
       this.$refs.form.reset();
+    },
+    setHolidays(value) {
+      this.holidays = [];
+      let kanton = "";
+      csvFile.forEach((el) => {
+        if (el.offizieller_gemeindename === value) {
+          kanton = el.kanton.slice(-2); /* To get the Kantonkürzel */
+          return;
+        }
+      });
+      feiertage.forEach((e) => {
+        if (e.nationwide) {
+          this.holidays.push({
+            id: e.id,
+            when: new Date(e.start_date).toLocaleDateString("de-CH"),
+            name: e.name_text,
+          });
+        } else {
+          if (e.canton.includes(kanton)) {
+            this.holidays.push({
+              id: e.id,
+              when: new Date(e.start_date).toLocaleDateString("de-CH"),
+              name: e.name_text,
+            });
+          }
+        }
+      });
     },
   },
   created() {
